@@ -7,7 +7,7 @@
     <ProjectGuid>{C91DBBE3-AF54-4161-83D2-59C5BA8799BB}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CCRT_itemTags</RootNamespace>
+    <RootNamespace>ChiefCurtains.ItemTags</RootNamespace>
     <AssemblyName>CCRT_itemTags</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -39,6 +39,9 @@
       <HintPath>..\..\..\..\..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\Assembly-CSharp.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Humanizer, Version=2.14.0.0, Culture=neutral, PublicKeyToken=979442b78dfc278e, processorArchitecture=MSIL">
+      <HintPath>packages\Humanizer.Core.2.14.1\lib\netstandard2.0\Humanizer.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -64,21 +67,23 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\Gizmo_ItemTag.cs" />
+    <Compile Include="Core\ItemTag.cs" />
     <Compile Include="Resources\ModSettings_ItemTag.cs" />
     <Compile Include="Resources\Mod_ItemTag.cs" />
-    <Compile Include="Resources\Resource_Color_ItemTag.cs" />
+    <Compile Include="Resources\ColorUtil.cs" />
     <Compile Include="Core\Comp_ItemTag.cs" />
     <Compile Include="Designators\DesignatorBase_ItemTag.cs" />
     <Compile Include="Designators\Designators_ItemTag.cs" />
     <Compile Include="Harmony\HarmonyPatches_ItemTag.cs" />
     <Compile Include="Core\SpecialThingFilterWorker_ItemTag.cs" />
-    <Compile Include="Resources\SettingsHelper.cs" />
     <Compile Include="Resources\Settings_RenamingWindow.cs" />
-    <Compile Include="Resources\Strings.cs" />
+    <Compile Include="Resources\Constants.cs" />
     <Compile Include="TextureDrawing\OverlayDrawer_ItemTag.cs" />
     <Compile Include="Resources\StartupPatches_ItemTag.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TextureDrawing\TexCommand_ItemTag.cs" />
+    <Compile Include="TextureDrawing\MaterialUtil.cs" />
+    <Compile Include="TextureDrawing\TexUtil.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -8,7 +8,7 @@ using UnityEngine;
 using Verse.Steam;
 using Verse;
 
-namespace CCRT_itemTags.Resources
+namespace ChiefCurtains.Resources
 {
     public class Settings_RenamingWindow
     {

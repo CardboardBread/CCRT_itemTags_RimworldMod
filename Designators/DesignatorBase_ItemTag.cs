@@ -1,68 +1,62 @@
-﻿using RimWorld;
+﻿using ChiefCurtains.ItemTags;
+using RimWorld;
 using Verse;
 
-namespace CCRT_itemTags
+namespace ChiefCurtains
 {
     public abstract class DesignatorBase_ItemTag : Designator
     {
-        public override int DraggableDimensions
-        {
-            get
-            {
-                return 2;
-            }
-        }
+        public override int DraggableDimensions => 2;
+
         protected DesignatorBase_ItemTag()
         {
-            useMouseIcon = true;
-            soundDragSustain = SoundDefOf.Designate_DragStandard;
-            soundDragChanged = SoundDefOf.Designate_DragStandard_Changed;
-            soundSucceeded = SoundDefOf.Designate_Claim;
-            useMouseIcon = true;
-
+            this.useMouseIcon = true;
+            this.soundDragSustain = SoundDefOf.Designate_DragStandard;
+            this.soundDragChanged = SoundDefOf.Designate_DragStandard_Changed;
+            this.soundSucceeded = SoundDefOf.Designate_Claim;
+            this.useMouseIcon = true;
         }
-        public override AcceptanceReport CanDesignateCell(IntVec3 c)
+
+        public override AcceptanceReport CanDesignateCell(IntVec3 cell)
         {
-            if (!c.InBounds(Map))
+            if (!cell.InBounds(Map))
             {
                 return false;
             }
-            foreach (Thing t in c.GetThingList(Map))
+            foreach (Thing thing in cell.GetThingList(Map))
             {
-                if (CanDesignateThing(t).Accepted)
+                if (CanDesignateThing(thing).Accepted)
                 {
                     return true;
                 }
             }
             return false;
         }
-        public override void DesignateSingleCell(IntVec3 c)
+
+        public override void DesignateSingleCell(IntVec3 cell)
         {
-            foreach (Thing t in c.GetThingList(Map))
+            foreach (Thing thing in cell.GetThingList(Map))
             {
-                if (CanDesignateThing(t).Accepted)
+                if (CanDesignateThing(thing).Accepted)
                 {
-                    DesignateThing(t);
+                    DesignateThing(thing);
                 }
             }
         }
-        public override AcceptanceReport CanDesignateThing(Thing t)
+
+        public override AcceptanceReport CanDesignateThing(Thing thing)
         {
-            bool flag = t.Position.Fogged(t.Map);
-            AcceptanceReport result;
-            if (flag)
+            if (thing.Position.Fogged(thing.Map))
             {
-                result = false;
+                return false; // bool implicit operator
             }
             else
             {
-                Comp_ItemTag compItemTags = (t is ThingWithComps thingWithComps) ? thingWithComps.GetComp<Comp_ItemTag>() : null;
-                result = (compItemTags != null);
+                Comp_ItemTag compItemTags = (thing is ThingWithComps thingWithComps) ? thingWithComps.GetComp<Comp_ItemTag>() : null;
+                return compItemTags != null; // bool implicit operator
             }
-            return result;
         }
+
         public bool visible = true;
     }
-    //        CompItemTags_CCRT compItemTags = (t is ThingWithComps thingWithComps) ? thingWithComps.GetComp<CompItemTags_CCRT>() : null;
-    //result = (compItemTags != null);
 }

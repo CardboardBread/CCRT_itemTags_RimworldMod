@@ -1,80 +1,29 @@
-﻿using UnityEngine;
+﻿using ChiefCurtains.Resources;
+using System.Collections.Generic;
+using UnityEngine;
 using Verse;
 
-namespace CCRT_itemTags
+namespace ChiefCurtains.ItemTags
 {
     public class ModSettings_ItemTag : ModSettings
     {
-        // This bool MUST be true. It is called on severl times to enable the overlay. It is also what it toggled in settings and the overlay button.
-        public static bool ccrt_enableItemTags = true;
-        public static bool ccrt_enableTag = true;
-        public static bool ccrt_enableTagA = true;
-        public static bool ccrt_enableTagB = true;
-        public static bool ccrt_enableTagC = true;
-        public static bool ccrt_enableTagD = true;
-        public static bool ccrt_enableTagE = true;
-        public static bool ccrt_enableTagF = true;
-        public static bool ccrt_enableTagG = true;
-        public static bool ccrt_enableTagH = true;
-        public static bool ccrt_enableTagI = true;
-        public static bool ccrt_enableTagJ = true;
-        public static bool ccrt_enableTagK = true;
-        public static bool ccrt_enableTagL = true;
-        public static string curNameA = "curNameA";
-        public static string curNameB = "curNameB";
-        public static string curNameC = "curNameC";
-        public static string curNameD = "curNameD";
-        public static string curNameE = "curNameE";
-        public static string curNameF = "curNameF";
-        public static string curNameG = "curNameG";
-        public static string curNameH = "curNameH";
-        public static string curNameI = "curNameI";
-        public static string curNameJ = "curNameJ";
-        public static string curNameK = "curNameK";
-        public static string curNameL = "curNameL";
-        public static string newNameA;
-        public static string newNameB;
-        public static string newNameC;
-        public static string newNameD;
-        public static string newNameE;
-        public static string newNameF;
-        public static string newNameG;
-        public static string newNameH;
-        public static string newNameI;
-        public static string newNameJ;
-        public static string newNameK;
-        public static string newNameL;
+        public static List<ItemTag> GlobalItemTags = new List<ItemTag>();
+        public static ItemTag DefaultItemTag = new ItemTag("Default", Color.white); // TODO: might overwrite save data
+        public static bool EnableItemTags;
+
+        public static ItemTag ItemTagFromSaveKey(string saveKey)
+        {
+            var itemTagName = saveKey.Substring(Constants.filterSaveKeyPrefix.Length);
+            return GlobalItemTags.Find(x => x.name == itemTagName);
+        }
+
         public override void ExposeData()
         {
-            //scribing the setting to the save file so it persists after reloading the save.
-            Scribe_Values.Look(ref ccrt_enableItemTags, nameof(ccrt_enableItemTags), true);
-            Scribe_Values.Look(ref ccrt_enableTagA, nameof(ccrt_enableTagA), true);
-            Scribe_Values.Look(ref ccrt_enableTagB, nameof(ccrt_enableTagB), true);
-            Scribe_Values.Look(ref ccrt_enableTagC, nameof(ccrt_enableTagC), true);
-            Scribe_Values.Look(ref ccrt_enableTagD, nameof(ccrt_enableTagD), true);
-            Scribe_Values.Look(ref ccrt_enableTagE, nameof(ccrt_enableTagE), true);
-            Scribe_Values.Look(ref ccrt_enableTagF, nameof(ccrt_enableTagF), true);
-            Scribe_Values.Look(ref ccrt_enableTagG, nameof(ccrt_enableTagG), true);
-            Scribe_Values.Look(ref ccrt_enableTagH, nameof(ccrt_enableTagH), true);
-            Scribe_Values.Look(ref ccrt_enableTagI, nameof(ccrt_enableTagI), true);
-            Scribe_Values.Look(ref ccrt_enableTagJ, nameof(ccrt_enableTagJ), true);
-            Scribe_Values.Look(ref ccrt_enableTagK, nameof(ccrt_enableTagK), true);
-            Scribe_Values.Look(ref ccrt_enableTagL, nameof(ccrt_enableTagL), true);
-            Scribe_Values.Look(ref newNameA, nameof(curNameA), newNameA, true);
-            Scribe_Values.Look(ref newNameB, nameof(curNameB), newNameB, true);
-            Scribe_Values.Look(ref newNameC, nameof(curNameC), newNameC, true);
-            Scribe_Values.Look(ref newNameD, nameof(curNameD), newNameD, true);
-            Scribe_Values.Look(ref newNameE, nameof(curNameE), newNameE, true);
-            Scribe_Values.Look(ref newNameF, nameof(curNameF), newNameF, true);
-            Scribe_Values.Look(ref newNameG, nameof(curNameG), newNameG, true);
-            Scribe_Values.Look(ref newNameH, nameof(curNameH), newNameH, true);
-            Scribe_Values.Look(ref newNameI, nameof(curNameI), newNameI, true);
-            Scribe_Values.Look(ref newNameJ, nameof(curNameJ), newNameJ, true);
-            Scribe_Values.Look(ref newNameK, nameof(curNameK), newNameK, true);
-            Scribe_Values.Look(ref newNameL, nameof(curNameL), newNameL, true);
             base.ExposeData();
-
+            Scribe_Collections.Look(ref GlobalItemTags, nameof(GlobalItemTags), LookMode.Deep);
+            Scribe_Deep.Look(ref DefaultItemTag, nameof(DefaultItemTag));
         }
+
         public void DoWindowContents(Rect inRect)
         {
             Listing_Standard list = new Listing_Standard();
@@ -173,22 +122,8 @@ namespace CCRT_itemTags
             Widgets.EndScrollView();
         }
 
-        private static Vector2 ScrollPos = Vector2.zero;
-        private static float gap = 12f;
-        private static float lineGap = 3f;
-        public static float Gap { get => gap; set => gap = value; }
-        public static float LineGap { get => lineGap; set => lineGap = value; }
-        private string tmpTagNameA;
-        private string tmpTagNameB;
-        private string tmpTagNameC;
-        private string tmpTagNameD;
-        private string tmpTagNameE;
-        private string tmpTagNameF;
-        private string tmpTagNameG;
-        private string tmpTagNameH;
-        private string tmpTagNameI;
-        private string tmpTagNameJ;
-        private string tmpTagNameK;
-        private string tmpTagNameL;
+        public static Vector2 ScrollPos = Vector2.zero;
+        public static float Gap = 12f;
+        public static float LineGap = 3f;
     }
 }

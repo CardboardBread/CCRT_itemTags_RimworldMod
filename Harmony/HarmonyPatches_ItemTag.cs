@@ -1,83 +1,54 @@
-﻿using CCRT_itemTags.Resources;
+﻿using ChiefCurtains.Resources;
 using HarmonyLib;
 using RimWorld;
 using Verse;
 
-namespace CCRT_itemTags
+namespace ChiefCurtains.ItemTags
 {
+    // Setting up the harmony instance.
     [StaticConstructorOnStartup]
-
-    //Setting up the harmony instance
     public static class HarmonyPatches
     {
         static HarmonyPatches()
         {
-            //Tels the startup pacth to run anthing in the Solution starting with [HarmonyPatch(typeof(""))]
+            // Tells the startup patch to run anthing in the Solution starting with [HarmonyPatch(typeof(""))]
             Mod_ItemTag.harmonyInstance.PatchAll();
         }
 
     }
-    [HarmonyPatch(typeof(ThingFilter))]
-    [HarmonyPatch(nameof(ThingFilter.SetFromPreset))]
 
-    /*
-    Patching Stockpiles allowing all tags by default. 
-    Make sure that the SpecialThingFilter XML includes the line "<allowedByDefault>true</allowedByDefault>" for EACH tag type.
-    This will prevent the game from treating Chunks and other things that are "Things" and not "ThingsWithComps" as excluded from all filters. 
-    That causes a lot of issues with recipes using chunks, etc
-    */
-    class Patch_ThingFilter_SetFromPreset
+    // Use the filterDef's save key to find a ItemTag instance to filter against.
+    [HarmonyPatch(typeof(SpecialThingFilterDef), nameof(SpecialThingFilterDef.Worker), MethodType.Getter)]
+    public static class Patch_SpecialThingFilterDef_Worker_get
     {
-        public static SpecialThingFilterDef AllowTaggedADef = DefDatabase<SpecialThingFilterDef>.GetNamed("CCRT_itemTags_AllowItemTagA");
-        public static SpecialThingFilterDef AllowTaggedBDef = DefDatabase<SpecialThingFilterDef>.GetNamed("CCRT_itemTags_AllowItemTagB");
-        public static SpecialThingFilterDef AllowTaggedCDef = DefDatabase<SpecialThingFilterDef>.GetNamed("CCRT_itemTags_AllowItemTagC");
-        public static SpecialThingFilterDef AllowTaggedDDef = DefDatabase<SpecialThingFilterDef>.GetNamed("CCRT_itemTags_AllowItemTagD");
-        public static SpecialThingFilterDef AllowTaggedEDef = DefDatabase<SpecialThingFilterDef>.GetNamed("CCRT_itemTags_AllowItemTagE");
-        public static SpecialThingFilterDef AllowTaggedFDef = DefDatabase<SpecialThingFilterDef>.GetNamed("CCRT_itemTags_AllowItemTagF");
-        public static SpecialThingFilterDef AllowTaggedGDef = DefDatabase<SpecialThingFilterDef>.GetNamed("CCRT_itemTags_AllowItemTagG");
-        public static SpecialThingFilterDef AllowTaggedHDef = DefDatabase<SpecialThingFilterDef>.GetNamed("CCRT_itemTags_AllowItemTagH");
-        public static SpecialThingFilterDef AllowTaggedIDef = DefDatabase<SpecialThingFilterDef>.GetNamed("CCRT_itemTags_AllowItemTagI");
-        public static SpecialThingFilterDef AllowTaggedJDef = DefDatabase<SpecialThingFilterDef>.GetNamed("CCRT_itemTags_AllowItemTagJ");
-        public static SpecialThingFilterDef AllowTaggedKDef = DefDatabase<SpecialThingFilterDef>.GetNamed("CCRT_itemTags_AllowItemTagK");
-        public static SpecialThingFilterDef AllowTaggedLDef = DefDatabase<SpecialThingFilterDef>.GetNamed("CCRT_itemTags_AllowItemTagL");
-
-        public static void Prefix(ThingFilter __instance)
+        public static void Postfix(SpecialThingFilterDef __instance, SpecialThingFilterWorker __result)
         {
-            //New stockpiles default to not allow tagged.
-            __instance.SetAllow(AllowTaggedADef, allow: false);
-            __instance.SetAllow(AllowTaggedBDef, allow: false);
-            __instance.SetAllow(AllowTaggedCDef, allow: false);
-            __instance.SetAllow(AllowTaggedDDef, allow: false);
-            __instance.SetAllow(AllowTaggedEDef, allow: false);
-            __instance.SetAllow(AllowTaggedFDef, allow: false);
-            __instance.SetAllow(AllowTaggedGDef, allow: false);
-            __instance.SetAllow(AllowTaggedHDef, allow: false);
-            __instance.SetAllow(AllowTaggedIDef, allow: false);
-            __instance.SetAllow(AllowTaggedJDef, allow: false);
-            __instance.SetAllow(AllowTaggedKDef, allow: false);
-            __instance.SetAllow(AllowTaggedLDef, allow: false);
+            if (__result is SpecialThingFilterWorker_ItemTag itemTagFilter)
+            {
+                itemTagFilter.itemTag = ModSettings_ItemTag.ItemTagFromSaveKey(__instance.saveKey);
+            }
         }
     }
 
-    [HarmonyPatch(typeof(PlaySettings))]
-    [HarmonyPatch("ExposeData")]
-    public static class Patch_ExposeData
+    // Adding game-specific visibility to the 'Global Controls' save data.
+    [HarmonyPatch(typeof(PlaySettings), nameof(PlaySettings.ExposeData))]
+    public static class Patch_PlaySettings_ExposeData
     {
         public static void Postfix()
         {
-            Scribe_Values.Look<bool>(ref ModSettings_ItemTag.ccrt_enableItemTags, "ccrt_enableItemTags", true, false);
+            Scribe_Values.Look<bool>(ref ModSettings_ItemTag.EnableItemTags, "CCRT_" + nameof(ModSettings_ItemTag.EnableItemTags), true, false);
         }
     }
-    [HarmonyPatch(typeof(PlaySettings))]
-    [HarmonyPatch("DoPlaySettingsGlobalControls")]
-    //Adding the toggle icon to the lower right. Toggle icon calls on the above ExposeData patch.
-    public static class Patch_DoPlaySettingsGlobalControls
+
+    // Adding the toggle icon to the 'Global Controls', controlling game-specific visibility.
+    [HarmonyPatch(typeof(PlaySettings), nameof(PlaySettings.DoPlaySettingsGlobalControls))]
+    public static class Patch_PlaySettings_DoPlaySettingsGlobalControls
     {
         public static void Postfix(ref WidgetRow row, bool worldView)
         {
             if (!worldView)
             {
-                row.ToggleableIcon(ref ModSettings_ItemTag.ccrt_enableItemTags, TexCommand_ItemTag.ccrt_showTaggedOverlay, "Toggle Tagged Overlay", null, null);
+                row.ToggleableIcon(ref ModSettings_ItemTag.EnableItemTags, TexUtil.ShowTaggedOverlay, "Toggle Tagged Overlay", null, null);
             }
         }
     }
