@@ -61,16 +61,19 @@ namespace ChiefCurtains
             }
         }
 
+        // Render tagged icon overlay over the bottom right hand corner of the item on map.
         private void RendertaggedOverlay(Pair<Thing, Comp_ItemTag> overlay) // Copied from XeoNovaDan.
         {
-            // Render tagged icon overlay over the bottom right hand corner of the item on map.
             var thing = overlay.First;
+            var itemTag = overlay.Second;
+
             Vector3 drawPos = thing.DrawPos;
             var rotSize = thing.RotatedSize;
             drawPos.z -= 0.3f * rotSize.z;
             drawPos.x += 0.3f * rotSize.x;
             drawPos.y = BaseAlt + 0.16216215f;
-            drawBatch.DrawMesh(MeshPool.plane05, Matrix4x4.TRS(drawPos, Quaternion.identity, Vector3.one), overlay.Second.MatToDraw, 0, true);
+
+            drawBatch.DrawMesh(MeshPool.plane05, Matrix4x4.TRS(drawPos, Quaternion.identity, Vector3.one), itemTag.MatToDraw, 0, true);
         }
 
         public void Register(Thing thing, Comp_ItemTag itemTagComp, bool checkRegister = true) // Copied from XeoNovaDan.

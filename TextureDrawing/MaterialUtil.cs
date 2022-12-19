@@ -10,7 +10,7 @@ namespace ChiefCurtains.ItemTags
 {
     public static class MaterialUtil
     {
-        private static Dictionary<Color, Material> MaterialCache = new Dictionary<Color, Material>();
+        public static Dictionary<Color, Material> MaterialCache = new Dictionary<Color, Material>();
         public static Material GetMaterialWith(Color color)
         {
             if (MaterialCache.ContainsKey(color))

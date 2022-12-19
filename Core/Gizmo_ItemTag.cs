@@ -23,7 +23,7 @@ namespace ChiefCurtains.ItemTags
             icon = TexUtil.IconTagsButtonUI;
             defaultIconColor = Color.white;
             toggleAction = new Action(() => { }); // no-op to prevent Command_Toggle calling null
-            isActive = parent.isActive;
+            isActive = parent.IsActive;
         }
 
         public override bool InheritInteractionsFrom(Gizmo other)
@@ -35,11 +35,13 @@ namespace ChiefCurtains.ItemTags
         {
             base.ProcessInput(ev);
 
+            // Left Click
             if (ev.button == 0)
             {
                 parent.ToggleDefaultItemTag();
             }
 
+            // Right Click
             if (ev.button == 1)
             {
                 var floatMenu = new FloatMenu(GetMenuOptions());
@@ -47,13 +49,14 @@ namespace ChiefCurtains.ItemTags
             }
         }
 
+        // Adapted from Locks: https://github.com/Aviuz/Locks
         public List<FloatMenuOption> GetMenuOptions()
         {
             var list = new List<FloatMenuOption>();
             foreach (var globalItemTag in ModSettings_ItemTag.GlobalItemTags)
             {
-                var text = parent.ItemTags.Contains(globalItemTag) ? "Enable " + globalItemTag.name : "Disable " + globalItemTag.name;
-                Action action = () => parent.ToggleItemTag(globalItemTag);
+                var text = (parent.ItemTags.Contains(globalItemTag) ? "Enable " : "Disable ") + globalItemTag.name;
+                void action() => parent.ToggleItemTag(globalItemTag); // TODO: possibly cache List<FloatMenuOption> and model actions to lessen cost of GetMenuOptions()
                 list.Add(new FloatMenuOption(text, action));
             }
             return list;

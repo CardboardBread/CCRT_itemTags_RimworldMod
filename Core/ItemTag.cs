@@ -27,6 +27,22 @@ namespace ChiefCurtains.ItemTags
             return currentWords;
         }
 
+        public static Color GetNewColor(int step = 0)
+        {
+            var currentColor = ColorUtil.ColorList[step];
+            var matches = ModSettings_ItemTag.GlobalItemTags.FindAll(x => x.color == currentColor);
+            if (matches.Any())
+            {
+                return currentColor;
+            }
+            else
+            {
+                return GetNewColor(step + 1);
+            }
+        }
+
+        public Guid guid = new Guid();
+
         // User Configurable properties
         public string name;
         public Color color;
@@ -38,15 +54,15 @@ namespace ChiefCurtains.ItemTags
         public ItemTag(string name, Color color, Material material = null, bool enabled = true)
         {
             this.name = name == null ? GetNewName() : name;
-            this.color = color;
+            this.color = color == null ? GetNewColor() : color;
             this.material = material == null ? MaterialUtil.GetMaterialWith(color) : material;
             this.enabled = enabled;
 
             this.selfFilter = new SpecialThingFilterDef()
             {
                 defName = name + nameof(SpecialThingFilterDef),
-                label = "Allow Tag " + name,
-                description = "Allow things that are Tagged " + name,
+                label = "Allow Tag: " + name,
+                description = "Allow things that are Tagged: " + name,
                 parentCategory = ThingCategoryDef.Named("Root"),
                 allowedByDefault = true,
                 saveKey = Constants.filterSaveKeyPrefix + name,

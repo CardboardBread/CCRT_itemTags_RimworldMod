@@ -1,6 +1,7 @@
 ﻿using ChiefCurtains.ItemTags;
 using System;
 using System.Runtime.CompilerServices;
+using UnityEngine.Assertions;
 using Verse;
 
 namespace ChiefCurtains.ItemTags
@@ -15,12 +16,14 @@ namespace ChiefCurtains.ItemTags
             return def.HasComp(typeof(Comp_ItemTag));
         }
 
-        public override bool Matches(Thing t)
+        public override bool Matches(Thing thing)
         {
-            var itemTagComp = t.TryGetComp<Comp_ItemTag>();
+            Assert.IsNotNull(itemTag, "Item Tag instance is not injected before this filter is used!");
+            // return thing.TryGetComp<Comp_ItemTag>()?.IsTagged(itemTag) ?? false;
+            var itemTagComp = thing.TryGetComp<Comp_ItemTag>();
             if (itemTagComp != null)
             {
-                return itemTagComp.ItemTags.Contains(itemTag);
+                return itemTagComp.IsTagged(itemTag);
             }
             else
             {
@@ -47,7 +50,7 @@ namespace ChiefCurtains.ItemTags
             var itemTagComp = t.TryGetComp<Comp_ItemTag>();
             if (itemTagComp != null)
             {
-                return !itemTagComp.isActive();
+                return !itemTagComp.IsActive();
             }
             else
             {
@@ -74,7 +77,7 @@ namespace ChiefCurtains.ItemTags
             var itemTagComp = t.TryGetComp<Comp_ItemTag>();
             if (itemTagComp != null)
             {
-                return itemTagComp.isActive();
+                return itemTagComp.IsActive();
             }
             else
             {

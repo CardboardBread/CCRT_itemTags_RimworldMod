@@ -4,8 +4,8 @@ using Verse;
 
 namespace ChiefCurtains
 {
-    // Draggable Button in the Architect Menu under the "Icon Tags" group. 
-    internal class Designator_ItemTag : DesignatorBase_ItemTag
+    // Draggable Button in the Architect Menu under the "Icon Tags" group.
+    public class Designator_ItemTag : DesignatorBase_ItemTag
     {
         public override bool Visible => ModSettings_ItemTag.EnableItemTags ? visible : !visible;
 

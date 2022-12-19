@@ -12,7 +12,7 @@ namespace ChiefCurtains.ItemTags
         static HarmonyPatches()
         {
             // Tells the startup patch to run anthing in the Solution starting with [HarmonyPatch(typeof(""))]
-            Mod_ItemTag.harmonyInstance.PatchAll();
+            Mod_ItemTag.HarmonyInstance.PatchAll();
         }
 
     }

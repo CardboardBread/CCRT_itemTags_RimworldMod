@@ -6,6 +6,6 @@ namespace ChiefCurtains.Resources
     [StaticConstructorOnStartup]
     public static class Constants
     {
-        public const string filterSaveKeyPrefix = "CRT_allowItem_";
+        public const string filterSaveKeyPrefix = "CCRT_allowItem_";
     }
 }

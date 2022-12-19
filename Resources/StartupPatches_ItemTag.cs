@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Verse;
 
-namespace ChiefCurtains
+namespace ChiefCurtains.ItemTags
 {
     [StaticConstructorOnStartup]
     public static class StartupPatches_ItemTag
@@ -10,11 +10,11 @@ namespace ChiefCurtains
         // This allows tagging of All items, can be tricky so we will revisit. 
         static StartupPatches_ItemTag()
         {
-            foreach (var t in DefDatabase<ThingDef>.AllDefs)
+            foreach (var thingDef in DefDatabase<ThingDef>.AllDefs)
             {
-                if (t.EverHaulable)
+                if (thingDef.EverHaulable)
                 {
-                    t.comps.Add(new CompProperties_ItemTag());
+                    thingDef.comps.Add(new CompProperties_ItemTag());
                 }
             }
         }

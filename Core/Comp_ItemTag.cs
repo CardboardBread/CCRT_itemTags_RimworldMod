@@ -1,6 +1,7 @@
 ﻿using RimWorld;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Verse;
 using static System.Collections.Specialized.BitVector32;
@@ -11,7 +12,8 @@ namespace ChiefCurtains.ItemTags
     // This class holds the state of tags for any taggable (haulable) thing.
     public class Comp_ItemTag : ThingComp
     {
-        private HashSet<ItemTag> m_itemTags = new HashSet<ItemTag>();
+        // References to tags in the global list, presence/absence is how tagging is tracked.
+        private HashSet<ItemTag> itemTagsInt = new HashSet<ItemTag>();
 
         public override IEnumerable<Gizmo> CompGetGizmosExtra()
         {
@@ -28,14 +30,14 @@ namespace ChiefCurtains.ItemTags
         {
             base.PostExposeData();
             // Save enabled tags as references to global list.
-            Scribe_Collections.Look(ref m_itemTags, nameof(m_itemTags), LookMode.Reference);
+            Scribe_Collections.Look(ref itemTagsInt, nameof(itemTagsInt), LookMode.Reference);
         }
 
         public override void PostSpawnSetup(bool respawningAfterLoad)
         {
             // Try and register the item as a tagged item to render when spawned.
             base.PostSpawnSetup(respawningAfterLoad);
-            cachedTaggedOverlayDrawer = parent.Map.GetComponent<OverlayDrawer_ItemTag>();
+            overlayDrawer = parent.Map.GetComponent<OverlayDrawer_ItemTag>();
             UpdateOverlayHandle();
         }
 
@@ -45,7 +47,7 @@ namespace ChiefCurtains.ItemTags
             // Force deregister an item when despawned e.g. furniture minified, to prevent weird duplicate tagged overlays being rendered. 
             // Saves memory and attempts to prevent floating tags in the place of destroyed or discarded entities.
             base.PostDeSpawn(map);
-            cachedTaggedOverlayDrawer.Deregister(parent, this, false);
+            overlayDrawer.Deregister(parent, this, false);
         }
 
         private void UpdateOverlayHandle()
@@ -57,16 +59,12 @@ namespace ChiefCurtains.ItemTags
 
             // Register/unregister the item to draw a tagged icon over.
             // Make sure to add any additional tags to this section or else the overlay will bug out.
-            cachedTaggedOverlayDrawer.Deregister(parent, this);
-            if (parent.Spawned && isActive())
+            overlayDrawer.Deregister(parent, this);
+            if (parent.Spawned && IsActive())
             {
-                cachedTaggedOverlayDrawer.Register(parent, this);
+                overlayDrawer.Register(parent, this);
             }
         }
-        
-        private MinifiedThing MinifiedParent => parent as MinifiedThing;
-
-        private bool isMinified() => MinifiedParent != null;
 
         public void ToggleDefaultItemTag() => ToggleItemTag(ModSettings_ItemTag.DefaultItemTag);
         
@@ -83,9 +81,11 @@ namespace ChiefCurtains.ItemTags
             UpdateOverlayHandle();
         }
 
-        public bool isActive() => ItemTags.Count > 0 && isAnyItemTagEnabled();
+        public bool IsTagged(ItemTag itemTag) => itemTag.enabled && ItemTags.Contains(itemTag);
 
-        public bool isAnyItemTagEnabled()
+        public bool IsActive() => ItemTags.Count > 0 && IsAnyItemTagEnabled();
+
+        public bool IsAnyItemTagEnabled()
         {
             foreach (var tag in ItemTags)
             {
@@ -95,26 +95,25 @@ namespace ChiefCurtains.ItemTags
         }
 
         // Telling the game where to find the textures for cachedMatToDraw
-        public Material MatToDraw => ItemTags.FirstOrFallback(ModSettings_ItemTag.DefaultItemTag).material;
+        public Material MatToDraw => ItemTags.First().material; // TODO: draw every tag on the parent ThingWithComps
 
         public HashSet<ItemTag> ItemTags
         {
             get
             {
-                if (isMinified())
+                if (parent is MinifiedThing minifiedParent)
                 {
-                    // TODO: parent.GetInnerIfMinified();
-                    var innerComp = MinifiedParent.InnerThing.TryGetComp<Comp_ItemTag>();
+                    var innerComp = minifiedParent.InnerThing.TryGetComp<Comp_ItemTag>();
                     if (innerComp != null)
                     {
                         return innerComp.ItemTags;
                     }
                 }
-                return m_itemTags;
+                return itemTagsInt;
             }
         }
 
-        private OverlayDrawer_ItemTag cachedTaggedOverlayDrawer;
+        private OverlayDrawer_ItemTag overlayDrawer;
     }
 
     public class CompProperties_ItemTag : CompProperties
