@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+	<DesignationCategoryDef>
+		<defName>CCRT_ItemTags_Designators</defName>
+		<label>Item Tags</label>
+		<description>Tag all the things.</description>
+		<order>455</order>
+		<specialDesignatorClasses>
+			<li>ChiefCurtains.ItemTags.Designator_ItemTag_Default</li>
+		</specialDesignatorClasses>
+	</DesignationCategoryDef>
+</Defs>

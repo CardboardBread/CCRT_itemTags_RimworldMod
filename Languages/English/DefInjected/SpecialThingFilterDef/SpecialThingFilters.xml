@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+	<!-- Item A -->
+	<CCRT_itemTags_AllowItemTagA.label>Allow Tag A</CCRT_itemTags_AllowItemTagA.label>
+	<CCRT_itemTags_AllowItemTagA.description>Allow things that are Tagged A.</CCRT_itemTags_AllowItemTagA.description>
+	<!-- Item B -->
+	<CCRT_itemTags_AllowItemTagB.label>Allow Tag B</CCRT_itemTags_AllowItemTagB.label>
+	<CCRT_itemTags_AllowItemTagB.description>Allow things that are Tagged B.</CCRT_itemTags_AllowItemTagB.description>
+	<!-- Item C -->
+	<CCRT_itemTags_AllowItemTagC.label>Allow Tag C</CCRT_itemTags_AllowItemTagC.label>
+	<CCRT_itemTags_AllowItemTagC.description>Allow things that are Tagged B.</CCRT_itemTags_AllowItemTagC.description>
+	<!-- Item D -->
+	<CCRT_itemTags_AllowItemTagD.label>Allow Tag D</CCRT_itemTags_AllowItemTagD.label>
+	<CCRT_itemTags_AllowItemTagD.description>Allow things that are Tagged D.</CCRT_itemTags_AllowItemTagD.description>
+	<!-- Item E -->
+	<CCRT_itemTags_AllowItemTagE.label>Allow Tag E</CCRT_itemTags_AllowItemTagE.label>
+	<CCRT_itemTags_AllowItemTagE.description>Allow things that are Tagged E.</CCRT_itemTags_AllowItemTagE.description>
+	<!-- Item F -->
+	<CCRT_itemTags_AllowItemTagF.label>Allow Tag F</CCRT_itemTags_AllowItemTagF.label>
+	<CCRT_itemTags_AllowItemTagF.description>Allow things that are Tagged F.</CCRT_itemTags_AllowItemTagF.description>
+	<!-- Item G -->
+	<CCRT_itemTags_AllowItemTagG.label>Allow Tag G</CCRT_itemTags_AllowItemTagG.label>
+	<CCRT_itemTags_AllowItemTagG.description>Allow things that are Tagged G.</CCRT_itemTags_AllowItemTagG.description>
+	<!-- Item H -->
+	<CCRT_itemTags_AllowItemTagH.label>Allow Tag H</CCRT_itemTags_AllowItemTagH.label>
+	<CCRT_itemTags_AllowItemTagH.description>Allow things that are Tagged H.</CCRT_itemTags_AllowItemTagH.description>
+	<!-- Item I -->
+	<CCRT_itemTags_AllowItemTagI.label>Allow Tag I</CCRT_itemTags_AllowItemTagI.label>
+	<CCRT_itemTags_AllowItemTagI.description>Allow things that are Tagged I.</CCRT_itemTags_AllowItemTagI.description>
+	<!-- Item J -->
+	<CCRT_itemTags_AllowItemTagJ.label>Allow Tag J</CCRT_itemTags_AllowItemTagJ.label>
+	<CCRT_itemTags_AllowItemTagJ.description>Allow things that are Tagged J.</CCRT_itemTags_AllowItemTagJ.description>
+	<!-- Item K -->
+	<CCRT_itemTags_AllowItemTagK.label>Allow Tag K</CCRT_itemTags_AllowItemTagK.label>
+	<CCRT_itemTags_AllowItemTagK.description>Allow things that are Tagged K.</CCRT_itemTags_AllowItemTagK.description>
+	<!-- Item L -->
+	<CCRT_itemTags_AllowItemTagL.label>Allow Tag L</CCRT_itemTags_AllowItemTagL.label>
+	<CCRT_itemTags_AllowItemTagL.description>Allow things that are Tagged L.</CCRT_itemTags_AllowItemTagL.description>
+</LanguageData>

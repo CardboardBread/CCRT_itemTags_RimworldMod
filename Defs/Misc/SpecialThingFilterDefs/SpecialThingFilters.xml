@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+	<SpecialThingFilterDef>
+		<defName>CCRT_ItemTags_FilterNoTag</defName>
+		<label>Allow untagged</label>
+		<description>Allow things that are not tagged.</description>
+		<parentCategory>Root</parentCategory>
+		<allowedByDefault>true</allowedByDefault>
+		<saveKey>CCRT_ItemTags_FilterNoTag</saveKey>
+		<workerClass>ChiefCurtains.ItemTags.SpecialThingFilterWorker_NoTag</workerClass>
+	</SpecialThingFilterDef>
+  <SpecialThingFilterDef>
+    <defName>CCRT_ItemTags_FilterAnyTag</defName>
+    <label>Allow tagged</label>
+    <description>Allow things that are tagged by any tag.</description>
+    <parentCategory>Root</parentCategory>
+    <allowedByDefault>true</allowedByDefault>
+    <saveKey>CCRT_ItemTags_FilterAnyTag</saveKey>
+    <workerClass>ChiefCurtains.ItemTags.SpecialThingFilterWorker_AnyTag</workerClass>
+  </SpecialThingFilterDef>
+</Defs>
